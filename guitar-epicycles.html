@@ -1,0 +1,314 @@
+---
+layout: null
+title: Guitar Fourier Epicycles
+permalink: /guitar-epicycles/
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Guitar Fourier Epicycles</title>
+<style>
+  :root {
+    --bg: #07080c;
+    --fg: #e8ecf4;
+    --muted: #8a93a6;
+    --accent: #7bd88f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; }
+  #stage { position: fixed; inset: 0; display: block; }
+  #panel {
+    position: fixed; top: 16px; left: 16px; z-index: 2;
+    background: rgba(15,17,22,0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px 16px;
+    width: 280px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  #panel h1 { margin: 0 0 8px; font-size: 14px; font-weight: 600; letter-spacing: 0.2px; }
+  #panel p { margin: 0 0 10px; color: var(--muted); font-size: 12px; }
+  #panel label { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0; color: var(--muted); }
+  #panel input[type=range] { flex: 1; }
+  #panel .val { color: var(--fg); min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
+  button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--accent);
+    color: #07231a;
+    border: 0;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.secondary { background: transparent; color: var(--fg); border: 1px solid rgba(255,255,255,0.15); }
+  #status { color: var(--muted); margin-top: 8px; font-size: 12px; min-height: 1em; }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<div id="panel">
+  <h1>Guitar → Fourier Epicycles</h1>
+  <p>마이크로 들어온 소리를 FFT한 뒤, 주요 주파수 성분을 복소평면 위의 회전하는 원(epicycle)들로 겹쳐 그립니다. 맨 끝 점의 궤적이 파형을 그려냅니다.</p>
+  <label>에피사이클 개수 <span class="val" id="kVal">40</span>
+    <input id="kSlider" type="range" min="4" max="200" value="40" />
+  </label>
+  <label>크기 <span class="val" id="sVal">1.0</span>
+    <input id="sSlider" type="range" min="0.2" max="5" step="0.1" value="1.0" />
+  </label>
+  <label>회전 속도 <span class="val" id="rVal">1.0</span>
+    <input id="rSlider" type="range" min="0.1" max="4" step="0.1" value="1.0" />
+  </label>
+  <label>트레일 길이 <span class="val" id="tVal">600</span>
+    <input id="tSlider" type="range" min="50" max="2000" step="10" value="600" />
+  </label>
+  <button id="startBtn">마이크 시작</button>
+  <button id="stopBtn" class="secondary" disabled>정지</button>
+  <div id="status">대기 중…</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const canvas = document.getElementById("stage");
+  const ctx = canvas.getContext("2d");
+  const statusEl = document.getElementById("status");
+  const startBtn = document.getElementById("startBtn");
+  const stopBtn = document.getElementById("stopBtn");
+
+  const kSlider = document.getElementById("kSlider");
+  const sSlider = document.getElementById("sSlider");
+  const rSlider = document.getElementById("rSlider");
+  const tSlider = document.getElementById("tSlider");
+  const kVal = document.getElementById("kVal");
+  const sVal = document.getElementById("sVal");
+  const rVal = document.getElementById("rVal");
+  const tVal = document.getElementById("tVal");
+
+  let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  function resize() {
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    canvas.width = Math.floor(window.innerWidth * dpr);
+    canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  const N = 1024;
+  const timeBuf = new Float32Array(N);
+  const reBuf = new Float32Array(N);
+  const imBuf = new Float32Array(N);
+  const window_ = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    window_[i] = 0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (N - 1));
+  }
+
+  function fftInPlace(re, im) {
+    const n = re.length;
+    let j = 0;
+    for (let i = 1; i < n; i++) {
+      let bit = n >> 1;
+      for (; j & bit; bit >>= 1) j ^= bit;
+      j ^= bit;
+      if (i < j) {
+        let tr = re[i]; re[i] = re[j]; re[j] = tr;
+        let ti = im[i]; im[i] = im[j]; im[j] = ti;
+      }
+    }
+    for (let len = 2; len <= n; len <<= 1) {
+      const half = len >> 1;
+      const ang = -2 * Math.PI / len;
+      const wRe0 = Math.cos(ang);
+      const wIm0 = Math.sin(ang);
+      for (let i = 0; i < n; i += len) {
+        let cRe = 1, cIm = 0;
+        for (let k = 0; k < half; k++) {
+          const aRe = re[i + k];
+          const aIm = im[i + k];
+          const bRe = re[i + k + half] * cRe - im[i + k + half] * cIm;
+          const bIm = re[i + k + half] * cIm + im[i + k + half] * cRe;
+          re[i + k] = aRe + bRe;
+          im[i + k] = aIm + bIm;
+          re[i + k + half] = aRe - bRe;
+          im[i + k + half] = aIm - bIm;
+          const tRe = cRe * wRe0 - cIm * wIm0;
+          const tIm = cRe * wIm0 + cIm * wRe0;
+          cRe = tRe; cIm = tIm;
+        }
+      }
+    }
+  }
+
+  let audioCtx = null;
+  let analyser = null;
+  let source = null;
+  let stream = null;
+  let running = false;
+  let rafId = 0;
+
+  const trace = [];
+  let phaseT = 0;
+  let components = [];
+
+  function hslFor(freqIdx, total) {
+    const hue = (freqIdx * 360 / total) % 360;
+    return `hsl(${hue}, 80%, 65%)`;
+  }
+
+  function draw() {
+    rafId = requestAnimationFrame(draw);
+    if (!analyser) return;
+
+    analyser.getFloatTimeDomainData(timeBuf);
+
+    for (let i = 0; i < N; i++) {
+      reBuf[i] = timeBuf[i] * window_[i];
+      imBuf[i] = 0;
+    }
+    fftInPlace(reBuf, imBuf);
+
+    const K = Math.max(4, Math.min(200, parseInt(kSlider.value, 10)));
+    const scaleUser = parseFloat(sSlider.value);
+    const rotSpeed = parseFloat(rSlider.value);
+    const traceMax = parseInt(tSlider.value, 10);
+
+    const maxK = N / 2;
+    const bins = [];
+    for (let k = 1; k < maxK; k++) {
+      const re = reBuf[k], im = imBuf[k];
+      const amp = Math.sqrt(re * re + im * im) / N;
+      bins.push({ k, amp, phase: Math.atan2(im, re) });
+    }
+    bins.sort((a, b) => b.amp - a.amp);
+    components = bins.slice(0, K);
+
+    phaseT += 0.02 * rotSpeed;
+
+    const w = canvas.width, h = canvas.height;
+    ctx.fillStyle = "rgba(7,8,12,0.18)";
+    ctx.fillRect(0, 0, w, h);
+
+    const cx = w * 0.5, cy = h * 0.5;
+
+    const minDim = Math.min(w, h);
+    const visScale = minDim * 0.45 * scaleUser * dpr;
+
+    let x = cx, y = cy;
+    ctx.lineWidth = 1 * dpr;
+
+    for (let i = 0; i < components.length; i++) {
+      const c = components[i];
+      const r = c.amp * visScale;
+      if (r < 0.5) continue;
+      const ang = c.k * phaseT + c.phase;
+
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      const nx = x + r * Math.cos(ang);
+      const ny = y + r * Math.sin(ang);
+
+      ctx.strokeStyle = hslFor(i, components.length);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+
+      x = nx; y = ny;
+    }
+
+    trace.push(x, y);
+    while (trace.length / 2 > traceMax) { trace.shift(); trace.shift(); }
+
+    if (trace.length >= 4) {
+      ctx.lineWidth = 1.5 * dpr;
+      ctx.strokeStyle = "rgba(123,216,143,0.9)";
+      ctx.beginPath();
+      ctx.moveTo(trace[0], trace[1]);
+      for (let i = 2; i < trace.length; i += 2) ctx.lineTo(trace[i], trace[i + 1]);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(x, y, 2.5 * dpr, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+
+  async function start() {
+    try {
+      statusEl.textContent = "마이크 권한 요청 중…";
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+          channelCount: 1,
+        },
+        video: false,
+      });
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") await audioCtx.resume();
+      source = audioCtx.createMediaStreamSource(stream);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = N;
+      analyser.smoothingTimeConstant = 0;
+      source.connect(analyser);
+
+      running = true;
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      statusEl.textContent = `입력 준비됨 (sampleRate ${audioCtx.sampleRate} Hz, N=${N})`;
+      ctx.fillStyle = "#07080c";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      trace.length = 0;
+      rafId = requestAnimationFrame(draw);
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "마이크 접근 실패: " + (err && err.message ? err.message : err);
+    }
+  }
+
+  function stop() {
+    running = false;
+    cancelAnimationFrame(rafId);
+    if (source) try { source.disconnect(); } catch (e) {}
+    if (analyser) try { analyser.disconnect(); } catch (e) {}
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    if (audioCtx) audioCtx.close().catch(() => {});
+    source = analyser = stream = audioCtx = null;
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    statusEl.textContent = "정지됨";
+  }
+
+  startBtn.addEventListener("click", start);
+  stopBtn.addEventListener("click", stop);
+
+  function bindSlider(sl, label, fmt) {
+    const update = () => { label.textContent = fmt(sl.value); };
+    sl.addEventListener("input", update);
+    update();
+  }
+  bindSlider(kSlider, kVal, v => String(v));
+  bindSlider(sSlider, sVal, v => Number(v).toFixed(1));
+  bindSlider(rSlider, rVal, v => Number(v).toFixed(1));
+  bindSlider(tSlider, tVal, v => String(v));
+})();
+</script>
+</body>
+</html>
