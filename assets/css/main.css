@@ -69,6 +69,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .nav-links { display: flex; gap: 22px; font-size: 14px; align-items: center; }
 .nav-links a { color: var(--muted); }
 .nav-links a:hover { color: var(--ink); }
+.nav-links a.active { color: var(--ink); }
 .nav-links .nav-cv {
   color: var(--ink);
   border: 1px solid var(--ink);
@@ -275,14 +276,45 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 
 /* RESPONSIVE */
 @media (max-width: 640px) {
-  .nav-inner { flex-wrap: wrap; gap: 8px 14px; padding: 12px 20px; }
+  .nav-inner { flex-wrap: nowrap; gap: 12px; padding: 12px 20px; }
   .nav-brand { font-size: 14px; }
   .nav-links {
-    width: 100%;
-    gap: 8px 14px;
-    flex-wrap: wrap;
-    font-size: 12.5px;
-    justify-content: flex-start;
+    width: auto;
+    margin-left: auto;
+    gap: 8px;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+  .nav-links li { display: flex; align-items: center; }
+  .nav-links a[href^="#"] {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+  }
+  .nav-links a[href^="#"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    opacity: 0.45;
+    transform: translate(-50%, -50%);
+    transition: transform .2s var(--t), opacity .2s var(--t), background .2s var(--t);
+  }
+  .nav-links a[href^="#"]:hover::after,
+  .nav-links a[href^="#"].active::after {
+    background: var(--ink);
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.85);
   }
   .nav-links .nav-cv { font-size: 11.5px; padding: 3px 9px; }
   .hero { padding: 56px 0 40px; }
