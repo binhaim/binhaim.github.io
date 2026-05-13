@@ -24,6 +24,10 @@ owner:
 # Site settings
 username: Habin Lim
 user_title: Generative AI Researcher
-user_description: |-
-  M.S.–Ph.D. Student at VGI Lab
-  Korea University, Seoul, South Korea
+user_description: >-
+  I am an M.S.–Ph.D. student at the Visual & Geometric Intelligence (VGI) Lab,
+  Korea University. My research builds on diffusion-based generative models and
+  spans a broad range of multimodal problems — image, video, audio, 3D, and LLMs —
+  with the goal of contributing to both theoretical understanding and practical
+  applications. Outside the lab, I love performing as the lead vocalist in a
+  rock band.
