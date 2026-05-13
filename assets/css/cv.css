@@ -162,18 +162,16 @@
   list-style: decimal inside;
   margin: 0;
   padding: 0;
-  counter-reset: pub;
 }
 .cv-pubs li {
   list-style: none;
   position: relative;
   padding: 10px 0 10px 28px;
   page-break-inside: avoid;
-  counter-increment: pub;
 }
 .cv-pubs li + li { border-top: 1px dotted #e5e5e5; }
 .cv-pubs li::before {
-  content: "[" counter(pub) "]";
+  content: attr(data-number);
   position: absolute;
   left: 0;
   top: 10px;
