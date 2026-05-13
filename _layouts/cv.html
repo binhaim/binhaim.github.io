@@ -64,8 +64,7 @@
       <section class="cv-section">
         <h2>Publications</h2>
         <ol class="cv-pubs">
-          {% assign pubs_reversed = site.data.publications | reverse %}
-          {% for pub in pubs_reversed %}
+          {% for pub in site.data.publications %}
           <li>
             <p class="cv-pub-title">{{ pub.title }}</p>
             <p class="cv-pub-authors">{{ pub.authors }}</p>
