@@ -1,45 +1,38 @@
 <nav class="nav">
   <div class="nav-inner">
-    <a href="#top" class="nav-brand">
-      <span class="brand-mark">HL</span>
-      <span class="brand-text">Habin Lim</span>
-    </a>
+    <a href="#top" class="nav-brand">Habin Lim</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#education">Education</a></li>
       <li><a href="#publications">Publications</a></li>
       <li><a href="#honors">Honors</a></li>
+      <li><a href="{{ '/cv/' | prepend: site.baseurl }}" class="nav-cv">CV ↗</a></li>
     </ul>
-    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <header class="hero" id="top">
-  <div class="hero-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="grid-overlay"></div>
-  </div>
-  <div class="hero-inner">
-    <p class="hero-eyebrow"><span class="dot"></span> Available for research collaboration</p>
-    <h1 class="hero-title">
-      <span class="line">Hi, I&rsquo;m <span class="grad-text">{{ site.username }}</span>.</span>
-      <span class="line subtitle">{{ site.user_title }}</span>
-    </h1>
-    <p class="hero-lede">{{ site.description }}</p>
-    <div class="hero-cta">
-      <a href="#publications" class="btn btn-primary">View Publications <i class="fa-solid fa-arrow-right"></i></a>
-      <a href="mailto:{{ site.owner.email }}" class="btn btn-ghost"><i class="fa-regular fa-envelope"></i> Contact</a>
-    </div>
-    <div class="hero-meta">
-      <a href="{{ site.owner.website }}" target="_blank" rel="noopener"><i class="fa-solid fa-flask"></i> VGI Lab</a>
-      <span class="sep"></span>
-      <a href="https://github.com/{{ site.owner.github }}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-      <span class="sep"></span>
-      <a href="https://linkedin.com/in/{{ site.owner.linkedin }}" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+  <div class="container hero-grid">
+    <figure class="hero-photo">
+      <img src="{{ '/assets/images/profile.jpg' | prepend: site.baseurl }}" alt="Habin Lim presenting ConceptSplit at ICCV 2025, Hawaii" loading="eager">
+      <figcaption>ICCV 2025, Honolulu</figcaption>
+    </figure>
+    <div class="hero-text">
+      <h1 class="hero-title">Habin Lim</h1>
+      <p class="hero-role">
+        <span class="role-chunk">Generative AI Researcher</span>
+        <span class="role-sep">·</span>
+        <span class="role-chunk">M.S.&ndash;Ph.D. Student at <a href="{{ site.owner.website }}" target="_blank" rel="noopener">VGI Lab</a>, Korea University</span>
+        <span class="role-sep">·</span>
+        <span class="role-chunk">Seoul, South Korea</span>
+      </p>
+      <ul class="hero-links">
+        <li><a href="mailto:{{ site.owner.email }}">Email</a></li>
+        <li><a href="https://github.com/{{ site.owner.github }}" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/{{ site.owner.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="{{ site.owner.website }}" target="_blank" rel="noopener">Lab</a></li>
+      </ul>
     </div>
   </div>
-  <a href="#about" class="hero-scroll" aria-label="Scroll down"><span></span></a>
 </header>

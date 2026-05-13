@@ -1,32 +1,33 @@
 # _config.yml
 
-title: Habin Lim's CV               # 브라우저 탭에 표시될 이름
-description: >-                    # 사이트 설명 (검색 엔진용)
-  Generative AI researcher, M.S. student at Korea University.
-baseurl: ""                        # 보통 비워둡니다.
-url: "https://binhaim.github.io" # 본인 GitHub Pages 주소
+title: Habin Lim's CV
+description: >-
+  Generative AI researcher, M.S.–Ph.D. student at Korea University.
+baseurl: ""
+url: "https://binhaim.github.io"
 
 # Owner/author information
 owner:
   name:           Habin Lim
-  avatar:         profile.png       # assets/images/ 폴더에 넣을 프로필 사진 파일명
-  bio:            "Generative AI researcher, M.S. student at Korea University."
-  email:          your-email@example.com # 본인 이메일
-  # Social networking links
-  twitter:        # twitter_username
-  facebook:       # facebook_username
-  github:         your-github-id    # github_username
-  linkedin:       your-linkedin-id  # linkedin_username
-  instagram:      # instagram_username
-  # Google Scholar, VGI Lab link 등 추가 가능
-  scholar:        # google scholar id
-  website:        "https://vgi.korea.ac.kr" # VGI Lab 링크
-  
+  avatar:         profile.png
+  bio:            "Generative AI researcher, M.S.–Ph.D. student at Korea University."
+  email:          ha001211@khu.ac.kr
+  location:       "Seoul, South Korea"
+  twitter:
+  facebook:
+  github:         binhaim
+  linkedin:       habin1211
+  instagram:
+  scholar:
+  website:        "https://vgi.korea.ac.kr"
+
 # Site settings
-username: Habin Lim                 # header.html의 {{ site.username }}
-user_title: Generative AI Researcher # header.html의 {{ site.user_title }}
-user_description: >-                # about.html의 {{ site.user_description }}
-  I am a Master's student at the Visual & Geometric Intelligence (VGI) Lab at Korea University. 
-  My research focuses on generative models, with a special emphasis on diffusion-based approaches. 
-  I am passionate about exploring the frontiers of this technology, including personalized image generation and real-time video editing, to advance both theoretical understanding and practical applications. 
-  Outside of the lab, I enjoy performing as the lead vocalist in a rock band.
+username: Habin Lim
+user_title: Generative AI Researcher
+user_description: >-
+  I am an M.S.–Ph.D. student at the Visual & Geometric Intelligence (VGI) Lab,
+  Korea University. My research builds on diffusion-based generative models and
+  spans a broad range of multimodal problems — image, video, audio, 3D, and LLMs —
+  with the goal of contributing to both theoretical understanding and practical
+  applications. Outside the lab, I love performing as the lead vocalist in a
+  rock band.

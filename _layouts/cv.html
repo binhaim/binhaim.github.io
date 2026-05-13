@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <link rel="stylesheet" href="{{ '/assets/css/cv.css' | prepend: site.baseurl }}">
+  <body class="cv-body">
+
+    <div class="cv-toolbar no-print">
+      <a href="{{ '/' | prepend: site.baseurl }}" class="cv-back">← Back to site</a>
+      <button class="cv-print" onclick="window.print()">Save as PDF / Print</button>
+    </div>
+
+    <main class="cv-page">
+
+      <header class="cv-head">
+        <div>
+          <h1 class="cv-name">{{ site.username }}</h1>
+          <p class="cv-tag">{{ site.user_title }} · M.S.–Ph.D. Student, VGI Lab, Korea University</p>
+        </div>
+        <ul class="cv-contact">
+          <li><span>Email</span> <a href="mailto:{{ site.owner.email }}">{{ site.owner.email }}</a></li>
+          <li><span>Web</span> <a href="{{ site.url }}">{{ site.url | replace: 'https://','' }}</a></li>
+          <li><span>GitHub</span> <a href="https://github.com/{{ site.owner.github }}">github.com/{{ site.owner.github }}</a></li>
+          <li><span>LinkedIn</span> <a href="https://linkedin.com/in/{{ site.owner.linkedin }}">linkedin.com/in/{{ site.owner.linkedin }}</a></li>
+          <li><span>Location</span> {{ site.owner.location }}</li>
+        </ul>
+      </header>
+
+      <section class="cv-section">
+        <h2>Summary</h2>
+        <p class="cv-summary">{{ site.user_description }}</p>
+      </section>
+
+      <section class="cv-section">
+        <h2>Education</h2>
+        <ul class="cv-list">
+          {% for edu in site.data.education %}
+          <li>
+            <div class="cv-when">{{ edu.duration }}</div>
+            <div class="cv-what">
+              <p class="cv-title-line"><strong>{{ edu.degree }}</strong> · {{ edu.university }}</p>
+              {% if edu.summary %}<p class="cv-desc">{{ edu.summary }}</p>{% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="cv-section">
+        <h2>Experience</h2>
+        <ul class="cv-list">
+          {% for exp in site.data.experience %}
+          <li>
+            <div class="cv-when">{{ exp.duration }}</div>
+            <div class="cv-what">
+              <p class="cv-title-line"><strong>{{ exp.position }}</strong> · {{ exp.company }}</p>
+              {% if exp.summary %}<p class="cv-desc">{{ exp.summary }}</p>{% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="cv-section">
+        <h2>Publications</h2>
+        <ol class="cv-pubs">
+          {% assign pubs_reversed = site.data.publications | reverse %}
+          {% for pub in pubs_reversed %}
+          <li>
+            <p class="cv-pub-title">{{ pub.title }}</p>
+            <p class="cv-pub-authors">{{ pub.authors }}</p>
+            <p class="cv-pub-venue"><em>{{ pub.conference }}</em>{% if pub.url and pub.url != '#' %} · <a href="{{ pub.url }}">link</a>{% endif %}</p>
+          </li>
+          {% endfor %}
+        </ol>
+      </section>
+
+      <section class="cv-section">
+        <h2>Honors &amp; Awards</h2>
+        <ul class="cv-list">
+          {% for honor in site.data.honors %}
+          <li>
+            <div class="cv-when">{{ honor.date }}</div>
+            <div class="cv-what">
+              <p class="cv-title-line"><strong>{{ honor.award }}</strong></p>
+              <p class="cv-desc">{{ honor.organizer }}</p>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="cv-section">
+        <h2>Skills</h2>
+        <p class="cv-skills">Artificial Intelligence · Computer Vision · Generative Models · Diffusion Models · Python · PyTorch</p>
+      </section>
+
+      <footer class="cv-foot">
+        <p>Last updated: {{ site.time | date: "%B %Y" }} · Single source of truth: {{ site.url }}/cv/</p>
+      </footer>
+    </main>
+
+  </body>
+</html>

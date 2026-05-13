@@ -1,19 +1,19 @@
 - title: "Diffusion-Based AI System for Second Language Reading: Development, Text Quality Validation, and Learner Perception"
   conference: "Computers & Education, vol. 251, 105653, Oct. 2026 (JCR: 0.6%, IF: 10.8)"
   authors: "H. Lim*, Euijune Lee*, Si Eun Kwoun, Sung-Ho Bae, G.-M. Park, Yohan Hwang, and Sangmin-Michelle Lee†"
-  url: "#"
+  url: "https://doi.org/10.1016/j.compedu.2026.105653"
 
 - title: "ConceptSplit: Decoupled Multi-Concept Personalization of Diffusion Models via Token-wise Adaptation and Attention Disentanglement"
-  conference: International Conference on Computer Vision (ICCV), 2025
-  authors: "Habin Lim, Author 2, Author 3"
-  url: "#"
+  conference: "International Conference on Computer Vision (ICCV), Hawaii, U.S.A., Oct. 2025"
+  authors: "H. Lim, Youngseob Won, J. Seo, and G.-M. Park†"
+  url: "https://arxiv.org/abs/2510.04668"
 
 - title: "Good-Text Inversion for Faster Real Image Editing using Guided Diffusion Models"
-  conference: Korea Software Congress (KSC), 2024
-  authors: "Habin Lim, Author 2"
-  url: "#"
+  conference: "Korea Software Congress (KSC), Yeosu, Republic of Korea, Dec. 2024"
+  authors: "H. Lim and G.-M. Park"
+  url: "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12042363"
 
-- title: "LFS-Diffusion: Lifelong Few Shot Image Generation in Latent Diffusion Model via LeFT Weight Modulator"
-  conference: Korea Computer Congress (KCC), 2024
-  authors: "Habin Lim, Author 2"
-  url: "#"
+- title: "LFS-DIFFUSION: Lifelong Few-shot Image Generation In Latent Diffusion Model Via LeFT Weight Modulator"
+  conference: "Korea Computer Congress (KCC), Jeju Island, Republic of Korea, Jun. 2024 [Award]"
+  authors: "H. Lim, Y.-S. Won, SeonHyeok Kim, Yeonjin Seo, and G.-M. Park"
+  url: "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11862413"
