@@ -21,7 +21,9 @@
               <div class="row-date">{{ exp.duration }}</div>
               <div class="row-body">
                 <h3 class="row-title">{{ exp.position }} · <a class="row-org" href="{{ exp.url }}" target="_blank" rel="noopener noreferrer">{{ exp.company }}</a></h3>
+                {% if exp.summary %}
                 <p class="row-desc">{{ exp.summary }}</p>
+                {% endif %}
               </div>
             </li>
             {% endfor %}
@@ -38,7 +40,9 @@
               <div class="row-date">{{ edu.duration }}</div>
               <div class="row-body">
                 <h3 class="row-title">{{ edu.degree }} · <span class="row-org">{{ edu.university }}</span></h3>
+                {% if edu.summary %}
                 <p class="row-desc">{{ edu.summary }}</p>
+                {% endif %}
               </div>
             </li>
             {% endfor %}
