@@ -12,13 +12,14 @@
     <main class="cv-page">
 
       <header class="cv-head">
-        <div>
+        <img class="cv-photo" src="{{ '/assets/images/face.jpg' | prepend: site.baseurl }}" alt="Habin Lim">
+        <div class="cv-head-text">
           <h1 class="cv-name">{{ site.username }}</h1>
-          <p class="cv-tag">{{ site.user_title }} · M.S.–Ph.D. Student, VGI Lab, Korea University</p>
+          <p class="cv-tag">{{ site.user_title }} · M.S.&ndash;Ph.D. Student<br>VGI Lab, Korea University</p>
         </div>
         <ul class="cv-contact">
           <li><span>Email</span> <a href="mailto:{{ site.owner.email }}">{{ site.owner.email }}</a></li>
-          <li><span>Web</span> <a href="{{ site.url }}">{{ site.url | replace: 'https://','' }}</a></li>
+          <li><span>Web</span> <a href="https://binhaim.github.io/">https://binhaim.github.io/</a></li>
           <li><span>GitHub</span> <a href="https://github.com/{{ site.owner.github }}">github.com/{{ site.owner.github }}</a></li>
           <li><span>LinkedIn</span> <a href="https://linkedin.com/in/{{ site.owner.linkedin }}">linkedin.com/in/{{ site.owner.linkedin }}</a></li>
           <li><span>Location</span> {{ site.owner.location }}</li>
