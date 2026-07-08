@@ -23,7 +23,7 @@
                 <span class="pub-num">[{{ total_pubs | minus: forloop.index0 }}]</span>
                 <div class="pub-body">
                   <h3 class="pub-title">{{ pub.title }}</h3>
-                  <p class="pub-authors">{{ pub.authors }}</p>
+                  <p class="pub-authors">{{ pub.authors | replace: 'H. Lim', '<strong>H. Lim</strong>' }}</p>
                   <p class="pub-venue">{{ pub.conference }}{% if pub.url == 'TBD' %} · link TBD{% endif %}</p>
                 </div>
               </a>

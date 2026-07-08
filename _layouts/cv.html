@@ -38,7 +38,7 @@
           {% for pub in site.data.publications %}
           <li data-number="[{{ total_pubs | minus: forloop.index0 }}]">
             <p class="cv-pub-title">{{ pub.title }}</p>
-            <p class="cv-pub-authors">{{ pub.authors }}</p>
+            <p class="cv-pub-authors">{{ pub.authors | replace: 'H. Lim', '<strong>H. Lim</strong>' }}</p>
             <p class="cv-pub-venue"><em>{{ pub.conference }}</em>{% if pub.url == 'TBD' %} · <span class="cv-pub-tbd">link TBD</span>{% elsif pub.url and pub.url != '#' %} · <a href="{{ pub.url }}">link</a>{% endif %}</p>
           </li>
           {% endfor %}
