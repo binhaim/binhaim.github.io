@@ -183,6 +183,7 @@
 .cv-pub-authors { font-size: 10pt; color: #2a2a2a; margin: 0 0 2px; }
 .cv-pub-venue { font-size: 9.5pt; color: #525252; margin: 0; }
 .cv-pub-venue a { color: #1a1a1a; }
+.cv-pub-tbd { color: #999; font-style: italic; }
 
 /* Skills */
 .cv-skills { font-size: 10pt; color: #2a2a2a; margin: 0; }

@@ -32,18 +32,17 @@
       </section>
 
       <section class="cv-section">
-        <h2>Education</h2>
-        <ul class="cv-list">
-          {% for edu in site.data.education %}
-          <li>
-            <div class="cv-when">{{ edu.duration }}</div>
-            <div class="cv-what">
-              <p class="cv-title-line"><strong>{{ edu.degree }}</strong> · {{ edu.university }}</p>
-              {% if edu.summary %}<p class="cv-desc">{{ edu.summary }}</p>{% endif %}
-            </div>
+        <h2>Publications</h2>
+        <ol class="cv-pubs">
+          {% assign total_pubs = site.data.publications | size %}
+          {% for pub in site.data.publications %}
+          <li data-number="[{{ total_pubs | minus: forloop.index0 }}]">
+            <p class="cv-pub-title">{{ pub.title }}</p>
+            <p class="cv-pub-authors">{{ pub.authors }}</p>
+            <p class="cv-pub-venue"><em>{{ pub.conference }}</em>{% if pub.url == 'TBD' %} · <span class="cv-pub-tbd">link TBD</span>{% elsif pub.url and pub.url != '#' %} · <a href="{{ pub.url }}">link</a>{% endif %}</p>
           </li>
           {% endfor %}
-        </ul>
+        </ol>
       </section>
 
       <section class="cv-section">
@@ -62,17 +61,18 @@
       </section>
 
       <section class="cv-section">
-        <h2>Publications</h2>
-        <ol class="cv-pubs">
-          {% assign total_pubs = site.data.publications | size %}
-          {% for pub in site.data.publications %}
-          <li data-number="[{{ total_pubs | minus: forloop.index0 }}]">
-            <p class="cv-pub-title">{{ pub.title }}</p>
-            <p class="cv-pub-authors">{{ pub.authors }}</p>
-            <p class="cv-pub-venue"><em>{{ pub.conference }}</em>{% if pub.url and pub.url != '#' %} · <a href="{{ pub.url }}">link</a>{% endif %}</p>
+        <h2>Education</h2>
+        <ul class="cv-list">
+          {% for edu in site.data.education %}
+          <li>
+            <div class="cv-when">{{ edu.duration }}</div>
+            <div class="cv-what">
+              <p class="cv-title-line"><strong>{{ edu.degree }}</strong> · {{ edu.university }}</p>
+              {% if edu.summary %}<p class="cv-desc">{{ edu.summary }}</p>{% endif %}
+            </div>
           </li>
           {% endfor %}
-        </ol>
+        </ul>
       </section>
 
       <section class="cv-section">

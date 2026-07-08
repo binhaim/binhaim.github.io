@@ -12,6 +12,27 @@
         </div>
       </section>
 
+      <section class="section" id="publications">
+        <div class="container">
+          <h2 class="section-title">Publications</h2>
+          {% assign total_pubs = site.data.publications | size %}
+          <ol class="pubs">
+            {% for pub in site.data.publications %}
+            <li class="pub">
+              <a href="{{ pub.url | replace: 'TBD', '#' | default: '#' }}" target="_blank" rel="noopener noreferrer">
+                <span class="pub-num">[{{ total_pubs | minus: forloop.index0 }}]</span>
+                <div class="pub-body">
+                  <h3 class="pub-title">{{ pub.title }}</h3>
+                  <p class="pub-authors">{{ pub.authors }}</p>
+                  <p class="pub-venue">{{ pub.conference }}{% if pub.url == 'TBD' %} · link TBD{% endif %}</p>
+                </div>
+              </a>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+      </section>
+
       <section class="section" id="experience">
         <div class="container">
           <h2 class="section-title">Experience</h2>
@@ -47,27 +68,6 @@
             </li>
             {% endfor %}
           </ul>
-        </div>
-      </section>
-
-      <section class="section" id="publications">
-        <div class="container">
-          <h2 class="section-title">Publications</h2>
-          {% assign total_pubs = site.data.publications | size %}
-          <ol class="pubs">
-            {% for pub in site.data.publications %}
-            <li class="pub">
-              <a href="{{ pub.url | default: '#' }}" target="_blank" rel="noopener noreferrer">
-                <span class="pub-num">[{{ total_pubs | minus: forloop.index0 }}]</span>
-                <div class="pub-body">
-                  <h3 class="pub-title">{{ pub.title }}</h3>
-                  <p class="pub-authors">{{ pub.authors }}</p>
-                  <p class="pub-venue">{{ pub.conference }}</p>
-                </div>
-              </a>
-            </li>
-            {% endfor %}
-          </ol>
         </div>
       </section>
 

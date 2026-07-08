@@ -3,6 +3,11 @@
   authors: "H. Lim*, Euijune Lee*, Si Eun Kwoun, Sung-Ho Bae, G.-M. Park, Yohan Hwang, and Sangmin-Michelle Lee†"
   url: "https://doi.org/10.1016/j.compedu.2026.105653"
 
+- title: "OSVE: One Step Video Editing with One Step Diffusion Models"
+  conference: "European Conference on Computer Vision (ECCV), Malmö, Sweden, Sep. 2026"
+  authors: "H. Lim and G.-M. Park†"
+  url: "TBD"
+
 - title: "ConceptSplit: Decoupled Multi-Concept Personalization of Diffusion Models via Token-wise Adaptation and Attention Disentanglement"
   conference: "International Conference on Computer Vision (ICCV), Hawaii, U.S.A., Oct. 2025"
   authors: "H. Lim, Youngseob Won, J. Seo, and G.-M. Park†"
